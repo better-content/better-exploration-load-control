@@ -1,14 +1,14 @@
 modLoader="javafml"
 loaderVersion="[47,)"
 license="AGPL-3.0-or-later"
-issueTrackerURL="https://github.com/better-content/exploration-tick-governor/issues"
+issueTrackerURL="https://github.com/better-content/better-exploration-load-control/issues"
 
 [[mods]]
 modId="${mod_id}"
 version="${mod_version}"
 displayName="${mod_name}"
 authors="Better Content"
-displayURL="https://github.com/better-content/exploration-tick-governor"
+displayURL="https://github.com/better-content/better-exploration-load-control"
 description='''
 Measures server tick times and pauses optional Distant Horizons generation under pressure.
 '''

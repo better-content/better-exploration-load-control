@@ -1,4 +1,4 @@
-package com.bettercontent.explorationtickgovernor.performance;
+package com.bettercontent.betterexplorationloadcontrol.performance;
 
 import com.mojang.logging.LogUtils;
 import net.minecraft.commands.Commands;
@@ -80,7 +80,7 @@ public final class PerformanceGovernorService {
     @SubscribeEvent
     public static void onRegisterCommands(final RegisterCommandsEvent event) {
         event.getDispatcher().register(
-                Commands.literal("exploration_tick_governor")
+                Commands.literal("better_exploration_load_control")
                         .requires(source -> source.hasPermission(2))
                         .then(Commands.literal("performance_status").executes(context -> {
                             final PerformanceGovernor current = governor;

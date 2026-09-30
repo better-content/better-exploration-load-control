@@ -2,10 +2,10 @@
 
 ## Scope
 
-This repository contains the Better Content Forge mod **Exploration Tick Governor**.
+This repository contains the Better Content Forge mod **Better Exploration Load Control**.
 
-- Canonical mod ID: `exploration_tick_governor`
-- Canonical artifact: `exploration-tick-governor-<version>.jar`
+- Canonical mod ID: `better_exploration_load_control`
+- Canonical artifact: `better-exploration-load-control-<version>.jar`
 - Maven group: `com.bettercontent`
 - Java runtime: 17
 - Minecraft/Forge baseline: 1.20.1 / 47.4.13

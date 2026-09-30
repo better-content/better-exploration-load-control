@@ -1,4 +1,4 @@
-package com.bettercontent.explorationtickgovernor.performance;
+package com.bettercontent.betterexplorationloadcontrol.performance;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;

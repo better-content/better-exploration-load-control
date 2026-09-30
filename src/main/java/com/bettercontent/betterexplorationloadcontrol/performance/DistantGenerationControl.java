@@ -1,4 +1,4 @@
-package com.bettercontent.explorationtickgovernor.performance;
+package com.bettercontent.betterexplorationloadcontrol.performance;
 
 public interface DistantGenerationControl {
     boolean isAvailable();

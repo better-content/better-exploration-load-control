@@ -7,4 +7,4 @@ pluginManagement {
     }
 }
 
-rootProject.name = "exploration-tick-governor"
+rootProject.name = "better-exploration-load-control"

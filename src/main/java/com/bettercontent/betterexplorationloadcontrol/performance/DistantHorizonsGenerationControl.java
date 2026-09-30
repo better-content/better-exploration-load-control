@@ -1,4 +1,4 @@
-package com.bettercontent.explorationtickgovernor.performance;
+package com.bettercontent.betterexplorationloadcontrol.performance;
 
 import com.seibel.distanthorizons.api.interfaces.config.IDhApiConfigValue;
 import com.seibel.distanthorizons.core.api.external.methods.config.common.DhApiWorldGenerationConfig;

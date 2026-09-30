@@ -1,7 +1,7 @@
-package com.bettercontent.explorationtickgovernor.config;
+package com.bettercontent.betterexplorationloadcontrol.config;
 
-import com.bettercontent.explorationtickgovernor.performance.PerformanceGovernorPolicy;
-import com.bettercontent.explorationtickgovernor.performance.PerformanceGovernorService;
+import com.bettercontent.betterexplorationloadcontrol.performance.PerformanceGovernorPolicy;
+import com.bettercontent.betterexplorationloadcontrol.performance.PerformanceGovernorService;
 import net.minecraftforge.common.ForgeConfigSpec;
 
 public final class GovernorConfig {

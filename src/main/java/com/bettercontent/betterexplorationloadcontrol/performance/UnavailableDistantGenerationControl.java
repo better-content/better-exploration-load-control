@@ -1,4 +1,4 @@
-package com.bettercontent.explorationtickgovernor.performance;
+package com.bettercontent.betterexplorationloadcontrol.performance;
 
 final class UnavailableDistantGenerationControl implements DistantGenerationControl {
     private final String reason;

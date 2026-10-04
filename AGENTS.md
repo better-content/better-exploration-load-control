@@ -16,6 +16,6 @@ Commit after each coherent completed change. Run documented validation before co
 
 ## Validation
 
-Run `./gradlew verifyFast` for deterministic checks. Run `./gradlew verifyFull` for runtime or GameTest changes. Stage deployable runtime artifacts with `./gradlew stageRuntimeJar`.
+Run `./gradlew verifyFast` for deterministic checks. Run `./gradlew verifyFull` for runtime changes; it includes a dedicated-server startup smoke check, and this repository currently has no GameTests. Stage deployable runtime artifacts with `./gradlew stageRuntimeJar`.
 
 Do not commit build outputs, runtime worlds, logs, IDE state, or downloaded dependency JARs.

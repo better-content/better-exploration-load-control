@@ -68,9 +68,13 @@ tasks.processResources {
 tasks.withType<Test>().configureEach { useJUnitPlatform(); finalizedBy("jacocoTestReport") }
 jacoco { toolVersion = "0.8.12" }
 tasks.jacocoTestReport { dependsOn(tasks.test); reports { xml.required.set(true); html.required.set(true) } }
-tasks.register("headlessGameTest") { group = "verification"; dependsOn(tasks.named("runGameTestServer")) }
+tasks.register("headlessStartupSmoke") {
+    group = "verification"
+    description = "Starts the dedicated server to check mod loading; this repository has no GameTests."
+    dependsOn(tasks.named("runGameTestServer"))
+}
 val syncGameTestStructures by tasks.registering(Copy::class) { from("src/main/resources/gameteststructures"); into("run-gametest/gameteststructures") }
 tasks.matching { it.name.startsWith("prepareRunGameTestServer") }.configureEach { dependsOn(syncGameTestStructures) }
 tasks.register("verifyFast") { group = "verification"; dependsOn(tasks.named("check")) }
-tasks.register("verifyFull") { group = "verification"; dependsOn(tasks.named("verifyFast")); dependsOn(tasks.named("headlessGameTest")) }
+tasks.register("verifyFull") { group = "verification"; dependsOn(tasks.named("verifyFast")); dependsOn(tasks.named("headlessStartupSmoke")) }
 tasks.withType<JavaCompile>().configureEach { options.release.set(17) }

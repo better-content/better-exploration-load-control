@@ -24,6 +24,7 @@ class PerformanceGovernorTest {
         assertTrue(control.override);
         governor.close();
         assertFalse(control.override);
+        assertTrue(governor.closeObserved());
     }
 
     @Test
@@ -34,6 +35,14 @@ class PerformanceGovernorTest {
         final PerformanceGovernor governor = governor(failure);
         governor.sample(60);
         assertEquals(PerformanceGovernor.Transition.ADAPTER_FAILED, governor.sample(60));
+    }
+
+    @Test
+    void shutdownFailureIsReportedWithoutEscapingOrClaimingClear() {
+        final DistantGenerationControl failure = new FakeControl(true) {
+            @Override public void resume() { throw new IllegalStateException("synthetic shutdown failure"); }
+        };
+        assertFalse(governor(failure).closeObserved());
     }
 
     private static PerformanceGovernor governor(final DistantGenerationControl control) {

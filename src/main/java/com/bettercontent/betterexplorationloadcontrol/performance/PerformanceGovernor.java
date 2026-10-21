@@ -30,11 +30,17 @@ public final class PerformanceGovernor {
         }
     }
 
-    public void close() {
+    public void close() { closeObserved(); }
+
+    boolean closeObserved() {
         try {
             distantGeneration.resume();
-        } catch (RuntimeException | LinkageError ignored) {
-            // Server shutdown must not be blocked by an optional integration.
+            return true;
+        } catch (RuntimeException | LinkageError error) {
+            // Failure remains visible even at INFO; shutdown is never blocked.
+            org.slf4j.LoggerFactory.getLogger("bc.playtest.better_exploration_load_control.failure")
+                .warn("Distant Horizons override clear failed during shutdown", error);
+            return false;
         }
     }
 

@@ -65,7 +65,14 @@ tasks.processResources {
     inputs.properties(props)
     filesMatching(listOf("META-INF/mods.toml", "pack.mcmeta")) { expand(props) }
 }
-tasks.withType<Test>().configureEach { useJUnitPlatform(); finalizedBy("jacocoTestReport") }
+tasks.withType<Test>().configureEach {
+    useJUnitPlatform()
+    val testDirectory = layout.buildDirectory.dir("jvm-test-working").get().asFile
+    workingDir(testDirectory)
+    inputs.property("jvmTestWorkingDirectory", testDirectory.absolutePath)
+    doFirst { testDirectory.mkdirs() }
+    finalizedBy("jacocoTestReport")
+}
 jacoco { toolVersion = "0.8.12" }
 tasks.jacocoTestReport { dependsOn(tasks.test); reports { xml.required.set(true); html.required.set(true) } }
 tasks.register("headlessStartupSmoke") {
@@ -73,8 +80,7 @@ tasks.register("headlessStartupSmoke") {
     description = "Starts the dedicated server to check mod loading; this repository has no GameTests."
     dependsOn(tasks.named("runGameTestServer"))
 }
-val syncGameTestStructures by tasks.registering(Copy::class) { from("src/main/resources/gameteststructures"); into("run-gametest/gameteststructures") }
-tasks.matching { it.name.startsWith("prepareRunGameTestServer") }.configureEach { dependsOn(syncGameTestStructures) }
+apply(from = "gradle/native-gametest-fixture.gradle")
 tasks.register("verifyFast") { group = "verification"; dependsOn(tasks.named("check")) }
 tasks.register("verifyFull") { group = "verification"; dependsOn(tasks.named("verifyFast")); dependsOn(tasks.named("headlessStartupSmoke")) }
 tasks.withType<JavaCompile>().configureEach { options.release.set(17) }

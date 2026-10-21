@@ -1,6 +1,8 @@
 package com.bettercontent.betterexplorationloadcontrol.performance;
 
 import com.mojang.logging.LogUtils;
+import com.bettercontent.betterexplorationloadcontrol.diagnostics.PlaytestDiagnostics;
+import com.bettercontent.betterexplorationloadcontrol.diagnostics.PlaytestLog;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
 import net.minecraftforge.event.RegisterCommandsEvent;
@@ -21,6 +23,7 @@ public final class PerformanceGovernorService {
     private static PerformanceGovernor governor;
     private static long tickStartNanos;
     private static boolean adapterFailureLogged;
+    private static long summaryAt;
 
     private PerformanceGovernorService() {
     }
@@ -39,11 +42,16 @@ public final class PerformanceGovernorService {
                 ? new PerformanceGovernor(config.policy(), safeControl())
                 : null;
         adapterFailureLogged = false;
+        summaryAt = System.nanoTime();
     }
 
     @SubscribeEvent
     public static void onServerStopping(final ServerStoppingEvent event) {
-        if (governor != null) governor.close();
+        if (governor != null) {
+            boolean cleared = governor.closeObserved();
+            if (PlaytestDiagnostics.LOG.enabled("governor")) PlaytestDiagnostics.LOG.event("governor", "governor.shutdown", "server",
+                cleared ? "returned" : "failed", cleared ? "resume_returned" : "resume_failed", () -> "");
+        }
         governor = null;
         tickStartNanos = 0L;
     }
@@ -66,14 +74,18 @@ public final class PerformanceGovernorService {
                 LOGGER.warn("Distant Horizons performance adapter failed; tick metrics remain active: {}", status.lastReason());
                 return;
             }
-            LOGGER.info(
-                    "Exploration tick governor transition={} p95={}ms max={}ms dhBase={} dhOverride={} reason={}",
-                    transition,
-                    format(status.tickTimes().p95Ms()),
-                    format(status.tickTimes().maxMs()),
-                    status.distantGenerationBaseEnabled(),
-                    status.overrideActive(),
-                    status.lastReason());
+            if (PlaytestDiagnostics.LOG.enabled("governor")) PlaytestDiagnostics.LOG.event("governor", "governor.transition", "server", "observed", transition.name(),
+                () -> com.bettercontent.betterexplorationloadcontrol.diagnostics.FeatureObservation.fields(status.tickTimes().p95Ms(), status.tickTimes().maxMs(),
+                    status.distantGenerationBaseEnabled(), status.overrideActive()));
+        }
+        long now = System.nanoTime();
+        if (now - summaryAt >= 30_000_000_000L && PlaytestDiagnostics.LOG.enabled("metrics")) {
+            summaryAt = now;
+            final PerformanceGovernor.Status status = governor.status();
+            PlaytestDiagnostics.LOG.event("metrics", "governor.metrics", "server", "observed", "interval", () -> PlaytestLog.fields(
+                "count", status.tickTimes().count(), "p50_ms", status.tickTimes().p50Ms(), "p95_ms", status.tickTimes().p95Ms(),
+                "p99_ms", status.tickTimes().p99Ms(), "max_ms", status.tickTimes().maxMs(), "paused", status.budgetPaused(),
+                "adapter_available", status.adapterAvailable(), "base_enabled", status.distantGenerationBaseEnabled(), "override_active", status.overrideActive()));
         }
     }
 

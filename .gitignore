@@ -2,6 +2,7 @@
 build/
 run/
 run-gametest/
+/logs/
 *.iml
 .idea/
 

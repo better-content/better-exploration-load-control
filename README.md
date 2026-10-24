@@ -28,11 +28,7 @@ Standalone stays native INFO; pack profile selects scoped DEBUG/`bc.playtest.lev
 Common six-case and scope/metric projection tests run with the source gate. Logging is
 not gameplay-performance acceptance and does not alter policy thresholds or user config.
 
-## Scope and authority
-
-This repository owns its mod-specific behavior and authoring inputs. Read [local instructions](AGENTS.md)
-and the [shared documentation/policy index](../../better-content-modpack/docs/README.md).
-
+## Scope
 
 Measures active server tick p50/p95/p99/max over a configurable window. Under sustained load it pauses only its own Distant Horizons distant-generation API override, then clears that override after a recovery window. It does not change Distant Horizons config or enable a user-disabled feature. Use `/better_exploration_load_control performance_status` to inspect status.
 

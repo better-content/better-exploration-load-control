@@ -52,7 +52,14 @@ dependencies {
     compileOnly(fg.deobf("curse.maven:distant-horizons-508933:7375280"))
 }
 
-tasks.named<Jar>("jar") { finalizedBy("reobfJar") }
+tasks.named<Jar>("jar") {
+    manifest.attributes("MixinConfigs" to "better_exploration_load_control.mixins.json")
+    finalizedBy("reobfJar")
+}
+mixin {
+    add(sourceSets.main.get(), "better_exploration_load_control.refmap.json")
+    config("better_exploration_load_control.mixins.json")
+}
 val stageRuntimeJar by tasks.registering(Copy::class) {
     dependsOn(tasks.named("reobfJar"))
     from(layout.buildDirectory.file("reobfJar/output.jar"))

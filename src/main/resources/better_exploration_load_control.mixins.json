@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "minVersion": "0.8.5",
+  "package": "com.bettercontent.betterexplorationloadcontrol.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "better_exploration_load_control.refmap.json",
+  "mixins": [
+    "TFTHIncubatorSpawnMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

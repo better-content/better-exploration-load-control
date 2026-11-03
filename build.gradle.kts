@@ -50,6 +50,7 @@ dependencies {
     minecraft("net.minecraftforge:forge:$minecraftVersion-$forgeVersion")
     testImplementation("org.junit.jupiter:junit-jupiter:5.10.2")
     compileOnly(fg.deobf("curse.maven:distant-horizons-508933:7375280"))
+    compileOnly(fg.deobf("curse.maven:the-flesh-that-hates-852739:5235839"))
 }
 
 tasks.named<Jar>("jar") {
